@@ -29,6 +29,8 @@ import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.dataset.xml.FlatXmlWriter;
 import org.dbunit.operation.DatabaseOperation;
 
+import org.owasp.esapi.*;
+
 /**
  * This is a runnable java class that migrates/converts the current dbunit xml files to a new schema
  * structure. After running this class, you are able to pick either a folder to convert. Xmls files
@@ -165,6 +167,9 @@ public class MigrateDataSet {
 		if (sourceFile != null) {
 			shellCommand = shellCommand + "cat " + (cmd != null ? "-" : "") + " " + sourceFile + " | ";
 		}
+		
+		credentials[0] = getValidInput("validate_userID",credentials[0],Validator.SafeString,true,true);
+		credentials[1] = getValidInput("validate_password",credentials[1],Validator.SafeString,true,true);
 		
 		shellCommand = shellCommand + "mysql -u" + credentials[0] + " -p" + credentials[1];
 		
